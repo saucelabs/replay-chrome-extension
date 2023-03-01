@@ -15,7 +15,7 @@ class App extends React.Component {
     this.state = {
       token: false,
       region: 'us-west-1',
-      suiteName: '',
+      suite: '',
       buildId: '',
       tags: '',
       jobId: '',
@@ -34,7 +34,7 @@ class App extends React.Component {
   }
 
   async componentDidUpdate() {
-    if (this.state.platform === '' || this.state.suiteName !== '' || this.state.jobId !== '' || this.state.errMsg !== '') {
+    if (this.state.platform === '' || this.state.suite !== '' || this.state.jobId !== '' || this.state.errMsg !== '') {
       return;
     }
 
@@ -42,7 +42,7 @@ class App extends React.Component {
     const accessKey = await this.readStorage('accessKey');
     const credential = btoa(`${username}:${accessKey}`);
     const recording = await this.readStorage('recording');
-    this.setState({suiteName: JSON.parse(recording).title});
+    this.setState({suite: JSON.parse(recording).title});
 
     let fileId;
     await this.uploadFile(recording, 'recordings.json', credential)
@@ -110,14 +110,14 @@ class App extends React.Component {
           platformName: this.state.platform || 'Windows 10',
           'sauce:options': {
             devX: true,
-            name: this.state.suiteName,
+            name: this.state.suite,
             build: this.state.buildId,
             tags: this.state.tags.split(','),
             _batch: {
               framework: 'puppeteer-replay',
               frameworkVersion: 'latest',
               runnerVersion: runnerVersion,
-              testFile: this.state.suiteName,
+              testFile: this.state.suite,
               args: null,
               video_fps: 25,
             },
@@ -152,7 +152,7 @@ class App extends React.Component {
       },
       suites: [
         {
-          name: this.state.suiteName,
+          name: this.state.suite,
           recording: 'recordings.json',
           browserName: 'googlechrome',
           platform: this.state.platform,
