@@ -11,6 +11,10 @@ class Credential extends React.Component {
     };
   }
 
+  handleChange(key, event) {
+    this.setState({[key]: event.target.value});
+  }
+
   render() {
     const {
       handleCredential
@@ -21,11 +25,11 @@ class Credential extends React.Component {
         <form onSubmit={handleCredential}>
           <label className="form-label">
             Sauce User Name 
-            <input id="username" className="username" type="text" value={this.state.username} onChange={(event) => {this.setState({username: event.target.value})}} />
+            <input id="username" className="username" type="text" value={this.state.username} onChange={(event) => this.handleChange('username', event)} />
           </label>
           <label className="form-label">
             Sauce Access Key 
-            <input id="accessKey" className="accessKey" type="password" value={this.state.accessKey} onChange={(event) => {this.setState({accessKey: event.target.value})}} />
+            <input id="accessKey" className="accessKey" type="password" value={this.state.accessKey} onChange={(event) => this.handleChange('accessKey', event)} />
             <br/>
           </label>
           <label className="region form-label">
@@ -34,7 +38,7 @@ class Credential extends React.Component {
                 type="radio"
                 value="us-west-1"
                 checked={this.state.region === 'us-west-1'}
-                onChange={(event) => {this.setState({region: event.target.value})}}
+                onChange={(event) => this.handleChange('region', event)}              
               />
               us-west-1
               <input
@@ -42,13 +46,13 @@ class Credential extends React.Component {
                 type="radio"
                 value="eu-central-1"
                 checked={this.state.region === 'eu-central-1'}
-                onChange={(event) => {this.setState({region: event.target.value})}}
+                onChange={(event) => this.handleChange('region', event)}
               />
               eu-central-1
           </label>
-					<label className="form-label">
-          	<input id="submit" className="submit" type="submit" value="Submit" />
-					</label>
+          <label className="form-label">
+            <input id="submit" className="submit" type="submit" value="Submit" />
+          </label>
         </form>
       </div>
     );

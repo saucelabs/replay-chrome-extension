@@ -11,12 +11,8 @@ class ConfigForm extends React.Component {
     }
   }
 
-  handleUpdate(key, event) {
+  handleChange(key, event) {
     this.setState({[key]: event.target.value,});
-  }
-
-  handlePlatform(event) {
-    this.setState({platform: event.target.value})
   }
 
   render() {
@@ -29,7 +25,7 @@ class ConfigForm extends React.Component {
           <form onSubmit={handleConfig}>
             <label className="form-label">
               Platform
-                <select className="platform" id="platform" value={this.state.platform} onChange={(event) => this.handlePlatform(event)}>
+                <select className="platform" id="platform" value={this.state.platform} onChange={(event) => this.handleChange('platform', event)}>
                   <option value="Windows 11">Windows 11</option>
                   <option value="Windows 10">Windows 10</option>
                   <option value="macOS 12">macOS 12</option>
@@ -38,12 +34,12 @@ class ConfigForm extends React.Component {
             </label>
             <label className="form-label">
               Build ID
-              <input id="buildId" className="buildId" type="text" value={this.state.buildId} onChange={(event) => {this.setState({buildId: event.target.value})}} />
+              <input id="buildId" className="buildId" type="text" value={this.state.buildId} onChange={(event) => this.handleChange('buildId', event)} />
               <br/>
             </label>
             <label className="form-label">
               Tags
-              <input id="tags" className="tags" type="text" value={this.state.tags} onChange={(event) => {this.setState({tags: event.target.value})}} />
+              <input id="tags" className="tags" type="text" value={this.state.tags} onChange={(event) => this.handleChange('tags', event)} />
               <br/>
             </label>
             <label className="form-label">
