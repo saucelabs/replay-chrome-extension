@@ -1,0 +1,10 @@
+{
+   "name": "Replay Chrome Extension",
+   "description": "Replay Chrome Extension for Sauce Labs",
+   "version": "1.0",
+   "manifest_version": 3,
+   "permissions": [ "storage" ],
+   "host_permissions": ["https://*/"],
+   "devtools_page": "DevToolsPlugin.html"
+   
+}
