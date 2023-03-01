@@ -6,19 +6,27 @@
   display: flex;
   align-items: center;
   margin: 5px;
+	width: 200px;
+	flex: 2 1 auto;
 }
 
 .buildId {
   display: flex;
-  margin-left: 5px;
+	margin-left: auto;
 }
 
 .tags {
   display: flex;
-  margin-left: 5px;
+	margin-left: auto;
 }
 
 .platform {
   display: flex;
-  margin-left: 10px;
+	width: 150px;
+	margin-left: auto;
+}
+
+.submit {
+  margin-top: 10px;
+	width: 150px;
 }

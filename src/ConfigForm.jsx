@@ -1,4 +1,5 @@
 import React from "react";
+import './ConfigForm.css'
 
 class ConfigForm extends React.Component {
   constructor(props) {
@@ -45,7 +46,9 @@ class ConfigForm extends React.Component {
               <input id="tags" className="tags" type="text" value={this.state.tags} onChange={(event) => {this.setState({tags: event.target.value})}} />
               <br/>
             </label>
-            <input className="submit" type="submit" value="Submit" />
+            <label className="form-label">
+              <input className="submit" type="submit" value="Submit" />
+            </label>
           </form>
         </div>
       )

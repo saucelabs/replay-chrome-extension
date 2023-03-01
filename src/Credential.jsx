@@ -46,7 +46,9 @@ class Credential extends React.Component {
               />
               eu-central-1
           </label>
-          <input id="submit" className="submit" type="submit" value="Submit" />
+					<label className="form-label">
+          	<input id="submit" className="submit" type="submit" value="Submit" />
+					</label>
         </form>
       </div>
     );
