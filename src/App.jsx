@@ -50,7 +50,7 @@ class App extends React.Component {
       fileId = response;
     })
     if (!fileId) {
-      this.setState({trigger: false, failed: true, errMsg: 'failed to upload recording file'})
+      this.setState({trigger: false, failed: true, errMsg: 'failed to upload the recording file'})
       return;
     }
 
@@ -60,7 +60,7 @@ class App extends React.Component {
       configFileId = response;
     })
     if (!configFileId) {
-      this.setState({trigger: false, failed: true, errMsg: 'failed to upload config file'})
+      this.setState({trigger: false, failed: true, errMsg: 'failed to upload the config file'})
       return;
     }
 
