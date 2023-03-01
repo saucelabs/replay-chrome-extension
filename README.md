@@ -1,7 +1,7 @@
 # replay-chrome-extension
 Sauce chrome extension for puppeteer replay.
 
-You can run replay test on Sauce Labs using this chrome extension.
+You can run replay test on Sauce Labs using this chrome extension. Currently it's only available in Chrome Canary.
 
 ## Development
 ### Chrome Extension Setup
@@ -17,7 +17,7 @@ The generated files are in `build` folder.
 
 ### Load the Extension
 
-1. Open Chrome and type `chrome://extension`.
+1. Open Chrome Canary and type `chrome://extension`.
 2. Enable Developer Mode by clicking the toggle switch next to Developer mode.
 3. Click the Load unpacked button and select `build` directory.
 4. Open a new tab and open devtools -> Recorder tab.
