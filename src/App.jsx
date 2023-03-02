@@ -1,6 +1,5 @@
 import React from "react";
 import ConfigForm from "./ConfigForm";
-
 import Credential from "./Credential";
 
 class App extends React.Component {
@@ -40,43 +39,59 @@ class App extends React.Component {
 
     const username = await this.readStorage('username');
     const accessKey = await this.readStorage('accessKey');
-    const credential = btoa(`${username}:${accessKey}`);
+    const credential = window.btoa(`${username}:${accessKey}`);
     const recording = await this.readStorage('recording');
     this.setState({suite: JSON.parse(recording).title});
 
     let fileId;
-    await this.uploadFile(recording, 'recordings.json', credential)
-    .then(function (response) {
-      fileId = response;
-    })
-    if (!fileId) {
-      this.setState({trigger: false, failed: true, errMsg: 'failed to upload the recording file'})
+    try {
+      const resp = await this.uploadFile(recording, 'recordings.json', credential)
+      fileId = resp;
+    } catch (err) {
+      this.setState({
+        trigger: false,
+        failed: true,
+        errMsg: 'failed to upload the recording file, ' + err.toString(),
+      })
       return;
     }
 
     let configFileId;
-    await this.uploadFile(JSON.stringify(this.composeConfig()), 'sauce-runner.json', credential)
-    .then(function (response) {
-      configFileId = response;
-    })
-    if (!configFileId) {
-      this.setState({trigger: false, failed: true, errMsg: 'failed to upload the config file'})
+    try {
+      const resp = await this.uploadFile(JSON.stringify(this.composeConfig()), 'sauce-runner.json', credential)
+      configFileId = resp;
+    } catch (err) {
+      this.setState({
+        trigger: false,
+        failed: true,
+        errMsg: 'failed to upload the config file, ' + err.toString(),
+      })
       return;
     }
 
     let runnerVersion;
-    await this.getRunnerVersion(credential)
-    .then(function (resp) {
-      runnerVersion = resp;
-    })
+    try {
+      runnerVersion = await this.getRunnerVersion(credential)
+    } catch (err) {
+      this.setState({
+        trigger: false,
+        failed: true,
+        errMsg: 'failed to get runner version, ' + err.toString(),
+      })
+      return;
+    }
 
+    const storage = 'storage:745268a7-a184-4bf8-a1f1-6dc1f03036c0,storage:175cc7e6-be9e-42c3-afda-3d5cef4643b8'
+    //const storage = `storage:${fileId},storage:${configFileId}`;
     let jobId;
-    const storage = `storage:${fileId},storage:${configFileId}`;
-    await this.startJob(credential, storage, runnerVersion).then(function (resp) {
-      jobId = resp;
-    })
-    if (!jobId) {
-      this.setState({trigger: false, failed: true, errMsg: 'failed to trigger a sauce job'})
+    try {
+      jobId = await this.startJob(credential, storage, runnerVersion)
+    } catch (err) {
+      this.setState({
+        trigger: false,
+        failed: true,
+        errMsg: 'failed to trigger a sauce job, ' + err.toString(),
+      })
       return;
     }
     this.setState({jobId: jobId})
@@ -85,20 +100,24 @@ class App extends React.Component {
 
   async getRunnerVersion(credential) {
     const url = `https://api.${this.state.region}.saucelabs.com/v1/testcomposer/frameworks/puppeteer-replay`
-    return fetch(url, {
-      headers: {
-        Accept: '*/*',
-        Authorization:
-          'Basic ' + credential,
-      },
-    })
-    .then((response) => response.json())
-    .then((data) => {
-      return data.version;
-    })
-    .catch((error) => {
-      console.error('get file error:', error);
-    });
+    let resp;
+    try {
+      resp = await fetch(url, {
+        headers: {
+          Accept: '*/*',
+          Authorization:
+            'Basic ' + credential,
+        },
+      })
+    } catch (err) {
+      throw new Error(err);
+    }
+    const body = await resp.json()
+    if (!resp.ok) {
+      throw new Error(body);
+    }
+
+    return  body.version;
   }
 
   async startJob(credential, storage, runnerVersion) {
@@ -128,21 +147,25 @@ class App extends React.Component {
         },
       },
     };
-    return fetch(`https://ondemand.${this.state.region}.saucelabs.com/wd/hub/session`, {
-      method: 'POST',
-      headers: {
-        Accept: '*/*',
-        Authorization: 'Basic ' + credential,
-      },
-      body: JSON.stringify(data),
-    })
-    .then((response) => response.json())
-    .then((data) => {
-      return data.sessionId;
-    })
-    .catch((error) => {
-      console.error('create job Error:', error);
-    });
+    let resp;
+    try {
+      resp = await fetch(`https://ondemand.${this.state.region}.saucelabs.com/wd/hub/session`, {
+        method: 'POST',
+        headers: {
+          Accept: '*/*',
+          Authorization: 'Basic ' + credential,
+        },
+        body: JSON.stringify(data),
+      })
+    } catch (err) {
+      throw new Error(err);
+    }
+    const body = await resp.json()
+    if (!resp.ok) {
+      throw new Error(body.value.message);
+    }
+
+    return body.sessionId;
   }
 
   composeConfig() {
@@ -165,25 +188,27 @@ class App extends React.Component {
     const formData = new FormData();
     formData.append('payload', data)
     formData.append('name', fileName)
-    let fileId;
-    return fetch(`https://api.${this.state.region}.saucelabs.com/v1/storage/upload`, {
-      method: 'POST',
-      headers: {
-        Accept: '*/*',
-        Authorization:
-          'Basic ' + credential,
-        'User-Agent': 'chrome-extension',
-      },
-      body: formData,
-    })
-    .then((response) => response.json())
-    .then((data) => {
-      fileId = data.item.id;
-      return fileId;
-    })
-    .catch((error) => {
-      console.error('upload file Error:', error);
-    });
+    let resp;
+    try {
+       resp = await fetch(`https://api.${this.state.region}.saucelabs.com/v1/storage/upload`, {
+        method: 'POST',
+        headers: {
+          Accept: '*/*',
+          Authorization:
+            'Basic ' + credential,
+          'User-Agent': 'chrome-extension',
+        },
+        body: formData,
+      })
+    } catch (err) {
+      throw new Error(err);
+    }
+    const body = await resp.json()
+    if (!resp.ok) {
+      throw new Error(body.detail);
+    }
+    
+    return body.item.id;
   }
 
   handleCredential(event) {
