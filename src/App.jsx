@@ -21,7 +21,7 @@ class App extends React.Component {
       platform: '',
       failed: false,
       errMsg: '',
-      trigger: false,
+      triggered: false,
     };
     this.handleCredential = this.handleCredential.bind(this);
     this.handleConfig = this.handleConfig.bind(this);
@@ -45,11 +45,10 @@ class App extends React.Component {
 
     let fileId;
     try {
-      const resp = await this.uploadFile(recording, 'recordings.json', credential)
-      fileId = resp;
+      fileId = await this.uploadFile(recording, 'recordings.json', credential)
     } catch (err) {
       this.setState({
-        trigger: false,
+        triggered: false,
         failed: true,
         errMsg: 'failed to upload the recording file, ' + err.toString(),
       })
@@ -58,11 +57,10 @@ class App extends React.Component {
 
     let configFileId;
     try {
-      const resp = await this.uploadFile(JSON.stringify(this.composeConfig()), 'sauce-runner.json', credential)
-      configFileId = resp;
+      configFileId = await this.uploadFile(JSON.stringify(this.composeConfig()), 'sauce-runner.json', credential)
     } catch (err) {
       this.setState({
-        trigger: false,
+        triggered: false,
         failed: true,
         errMsg: 'failed to upload the config file, ' + err.toString(),
       })
@@ -74,23 +72,22 @@ class App extends React.Component {
       runnerVersion = await this.getRunnerVersion(credential)
     } catch (err) {
       this.setState({
-        trigger: false,
+        triggered: false,
         failed: true,
         errMsg: 'failed to get runner version, ' + err.toString(),
       })
       return;
     }
 
-    const storage = 'storage:745268a7-a184-4bf8-a1f1-6dc1f03036c0,storage:175cc7e6-be9e-42c3-afda-3d5cef4643b8'
-    //const storage = `storage:${fileId},storage:${configFileId}`;
+    const storage = `storage:${fileId},storage:${configFileId}`;
     let jobId;
     try {
       jobId = await this.startJob(credential, storage, runnerVersion)
     } catch (err) {
       this.setState({
-        trigger: false,
+        triggered: false,
         failed: true,
-        errMsg: 'failed to trigger a sauce job, ' + err.toString(),
+        errMsg: 'failed to triggered a sauce job, ' + err.toString(),
       })
       return;
     }
@@ -235,7 +232,7 @@ class App extends React.Component {
       buildId: event.target.buildId.value,
       tags: event.target.tags.value,
       platform: event.target.platform.value,
-      trigger: true,
+      triggered: true,
     })
   }
 
@@ -279,13 +276,13 @@ class App extends React.Component {
           <a href={job} target="_blank" rel="noreferrer">{job}</a>
         </div>
       )
-    } else if (this.state.trigger) {
+    } else if (this.state.triggered) {
       return (
         <div>Loading...</div>
       )
     } else if (this.state.failed && this.state.errMsg !== '') {
       return (
-        <div>Failed to trigger a test, reason: {this.state.errMsg}</div>
+        <div>Failed to run a test, reason: {this.state.errMsg}</div>
       )
     } else {
       return (
