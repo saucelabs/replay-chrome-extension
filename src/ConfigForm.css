@@ -5,21 +5,26 @@
 .form-row {
   display: flex;
   align-items: center;
-  margin: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
   width: 250px;
 }
 
 .form-label {
-  min-width: 100px;
+  min-width: 80px;
+  margin-left: 0;
+  margin-right: 0;
 }
 
 .buildId {
   display: flex;
+  width: 150px;
   margin-left: auto;
 }
 
 .tags {
   display: flex;
+  width: 150px;
   margin-left: auto;
 }
 
