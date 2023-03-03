@@ -210,36 +210,30 @@ class App extends React.Component {
     return body.item.id;
   }
 
-  handleCredential(event) {
-    event.preventDefault();
-    const username = event.target.username.value;
-    const accessKey = event.target.accessKey.value;
+  handleCredential(event, credentials) {
+    event.preventDefault()
+    const username = credentials.username;
+    const accessKey = credentials.accessKey;
     if (!username || !accessKey) {
       this.setState({validationMsg: 'username and access key are required'});
       return;
     }
-    let region;
-    if (event.target.usRegion.checked) {
-      region = event.target.usRegion.value;
-    } else {
-      region = event.target.euRegion.value;
-    }
     // eslint-disable-next-line no-undef
     chrome.storage.session.set({
-      username: event.target.username.value,
-      accessKey: event.target.accessKey.value,
-      region,
+      username,
+      accessKey,
+      region: credentials.region,
       token: true,
     });
     this.setState({token: true});
   }
 
-  handleConfig(event) {
+  handleConfig(event, config) {
     event.preventDefault();
     this.setState({
-      buildId: event.target.buildId.value,
-      tags: event.target.tags.value,
-      platform: event.target.platform.value,
+      buildId: config.buildId,
+      tags: config.tags,
+      platform: config.value,
       triggered: true,
     })
   }
@@ -275,7 +269,7 @@ class App extends React.Component {
         <div>
           <Credential
           handleCredential={this.handleCredential} />
-          <div className="validation">{this.state.validationMsg}</div>
+          {this.state.validationMsg !== '' && (<div className="validation">{this.state.validationMsg}</div>)}
         </div>
       );
     } else if (this.state.jobId !== '') {
