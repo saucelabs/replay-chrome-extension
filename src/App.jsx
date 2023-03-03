@@ -1,6 +1,6 @@
 import React from "react";
 import ConfigForm from "./ConfigForm";
-import Credential from "./Credential";
+import LoginForm from "./LoginForm";
 import './App.css';
 
 class App extends React.Component {
@@ -25,7 +25,7 @@ class App extends React.Component {
       triggered: false,
       validationMsg: '',
     };
-    this.handleCredential = this.handleCredential.bind(this);
+    this.handleLogin = this.handleLogin.bind(this);
     this.handleConfig = this.handleConfig.bind(this);
   }
 
@@ -210,7 +210,7 @@ class App extends React.Component {
     return body.item.id;
   }
 
-  handleCredential(event, credentials) {
+  handleLogin(event, credentials) {
     event.preventDefault()
     const username = credentials.username;
     const accessKey = credentials.accessKey;
@@ -267,8 +267,8 @@ class App extends React.Component {
     if (!this.state.token) {
       return (
         <div>
-          <Credential
-          handleCredential={this.handleCredential} />
+          <LoginForm
+          handleLogin={this.handleLogin} />
           {this.state.validationMsg !== '' && (<div className="validation">{this.state.validationMsg}</div>)}
         </div>
       );

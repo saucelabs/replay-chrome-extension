@@ -1,0 +1,48 @@
+.form {
+  width: 300px;
+}
+
+.form-row {
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  width: 300px;
+}
+
+.form-label {
+  min-width: 120px;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.username {
+  display: flex;
+  width: 150px;
+  margin-left: auto;
+}
+
+.accessKey {
+  display: flex;
+  width: 150px;
+  margin-left: auto;
+}
+
+.region {
+  display: flex;
+  align-items: center;
+  margin-bottom: auto;
+}
+
+.submit {
+  margin-top: 10px;
+  display: flex;
+  width: 150px;
+  justify-content: center;
+}
+
+.form-submit {
+  display: flex;
+  margin-top: 10px;
+  justify-content: right;
+}
