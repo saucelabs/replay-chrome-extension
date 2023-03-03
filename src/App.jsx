@@ -1,6 +1,7 @@
 import React from "react";
 import ConfigForm from "./ConfigForm";
 import Credential from "./Credential";
+import './App.css';
 
 class App extends React.Component {
   constructor(props) {
@@ -22,6 +23,7 @@ class App extends React.Component {
       failed: false,
       errMsg: '',
       triggered: false,
+      validationMsg: '',
     };
     this.handleCredential = this.handleCredential.bind(this);
     this.handleConfig = this.handleConfig.bind(this);
@@ -33,7 +35,7 @@ class App extends React.Component {
   }
 
   async componentDidUpdate() {
-    if (this.state.platform === '' || this.state.suite !== '' || this.state.jobId !== '' || this.state.errMsg !== '') {
+    if (this.state.platform === '' || this.state.suite !== '' || this.state.jobId !== '' || this.state.errMsg !== '' || this.state.validationMsg !== '') {
       return;
     }
 
@@ -210,7 +212,12 @@ class App extends React.Component {
 
   handleCredential(event) {
     event.preventDefault();
-    this.setState({token: true});
+    const username = event.target.username.value;
+    const accessKey = event.target.accessKey.value;
+    if (!username || !accessKey) {
+      this.setState({validationMsg: 'username and access key are required'});
+      return;
+    }
     let region;
     if (event.target.usRegion.checked) {
       region = event.target.usRegion.value;
@@ -224,6 +231,7 @@ class App extends React.Component {
       region,
       token: true,
     });
+    this.setState({token: true});
   }
 
   handleConfig(event) {
@@ -264,9 +272,11 @@ class App extends React.Component {
   render() {
     if (!this.state.token) {
       return (
-        <Credential
-          handleCredential={this.handleCredential}
-        />  
+        <div>
+          <Credential
+          handleCredential={this.handleCredential} />
+          <div className="validation">{this.state.validationMsg}</div>
+        </div>
       );
     } else if (this.state.jobId !== '') {
       const job = this.composeUrl(this.state.jobId);
