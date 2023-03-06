@@ -1,0 +1,47 @@
+.form {
+  width: 250px;
+}
+
+.form-row {
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  width: 250px;
+}
+
+.form-label {
+  min-width: 80px;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.buildId {
+  display: flex;
+  width: 150px;
+  margin-left: auto;
+}
+
+.tags {
+  display: flex;
+  width: 150px;
+  margin-left: auto;
+}
+
+.platform {
+  display: flex;
+  min-width: 150px;
+  margin-left: auto;
+}
+
+.submit {
+  display: flex;
+  justify-content: center;
+  width: 150px;
+}
+
+.form-submit {
+  display: flex;
+  margin-top: 10px;
+  justify-content: right;
+}
