@@ -233,7 +233,7 @@ class App extends React.Component {
     this.setState({
       buildId: config.buildId,
       tags: config.tags,
-      platform: config.value,
+      platform: config.platform,
       triggered: true,
     })
   }
