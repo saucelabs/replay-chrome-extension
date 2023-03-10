@@ -5,8 +5,6 @@ class ConfigForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      buildId: '',
-      tags: '',
       platform: 'Windows 11',
     }
   }
@@ -33,18 +31,6 @@ class ConfigForm extends React.Component {
                 <option value="macOS 12">macOS 12</option>
                 <option value="macOS 11.00">macOS 11</option>
               </select>
-            </div>
-            <div className="form-row">
-              <label className="form-label">
-                Build ID
-              </label>
-              <input id="buildId" className="buildId" type="text" value={this.state.buildId} onChange={(event) => this.handleChange('buildId', event)} />
-            </div>
-            <div className="form-row">
-              <label className="form-label">
-                Tags
-              </label>
-              <input id="tags" className="tags" type="text" value={this.state.tags} onChange={(event) => this.handleChange('tags', event)} />
             </div>
             <div className="form-submit">
               <input className="submit" type="submit" value="Submit" />

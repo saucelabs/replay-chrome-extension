@@ -16,8 +16,6 @@ class App extends React.Component {
       token: false,
       region: 'us-west-1',
       suite: '',
-      buildId: '',
-      tags: '',
       jobId: '',
       platform: '',
       failed: false,
@@ -81,7 +79,8 @@ class App extends React.Component {
       return;
     }
 
-    const storage = `storage:${fileId},storage:${configFileId}`;
+    //const storage = `storage:${fileId},storage:${configFileId}`;
+    const storage = `storage:164da9d7-f470-4ce2-9245-3902037880cb,storage:095dbd97-891f-4365-bb9d-fdf11e81f394`
     let jobId;
     try {
       jobId = await this.startJob(credential, storage, runnerVersion)
@@ -129,8 +128,6 @@ class App extends React.Component {
           'sauce:options': {
             devX: true,
             name: this.state.suite,
-            build: this.state.buildId,
-            tags: this.state.tags.split(','),
             _batch: {
               framework: 'puppeteer-replay',
               frameworkVersion: 'latest',
@@ -231,8 +228,6 @@ class App extends React.Component {
   handleConfig(event, config) {
     event.preventDefault();
     this.setState({
-      buildId: config.buildId,
-      tags: config.tags,
       platform: config.platform,
       triggered: true,
     })
