@@ -16,8 +16,6 @@ class App extends React.Component {
       token: false,
       region: 'us-west-1',
       suite: '',
-      buildId: '',
-      tags: '',
       jobId: '',
       platform: '',
       failed: false,
@@ -129,8 +127,6 @@ class App extends React.Component {
           'sauce:options': {
             devX: true,
             name: this.state.suite,
-            build: this.state.buildId,
-            tags: this.state.tags.split(','),
             _batch: {
               framework: 'puppeteer-replay',
               frameworkVersion: 'latest',
@@ -231,8 +227,6 @@ class App extends React.Component {
   handleConfig(event, config) {
     event.preventDefault();
     this.setState({
-      buildId: config.buildId,
-      tags: config.tags,
       platform: config.platform,
       triggered: true,
     })
