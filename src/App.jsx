@@ -79,8 +79,7 @@ class App extends React.Component {
       return;
     }
 
-    //const storage = `storage:${fileId},storage:${configFileId}`;
-    const storage = `storage:164da9d7-f470-4ce2-9245-3902037880cb,storage:095dbd97-891f-4365-bb9d-fdf11e81f394`
+    const storage = `storage:${fileId},storage:${configFileId}`;
     let jobId;
     try {
       jobId = await this.startJob(credential, storage, runnerVersion)
