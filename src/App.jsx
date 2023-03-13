@@ -14,7 +14,7 @@ class App extends React.Component {
 
     this.state = {
       token: false,
-      region: 'us-west-1',
+      region: '',
       suite: '',
       jobId: '',
       platform: '',
@@ -33,19 +33,21 @@ class App extends React.Component {
   }
 
   async componentDidUpdate() {
-    if (this.state.platform === '' || this.state.suite !== '' || this.state.jobId !== '' || this.state.errMsg !== '' || this.state.validationMsg !== '') {
+    if (this.state.platform === '' || this.state.suite !== '' || this.state.jobId !== ''
+      || this.state.errMsg !== '' || this.state.validationMsg !== '' || this.state.region !== '') {
       return;
     }
 
     const username = await this.readStorage('username');
     const accessKey = await this.readStorage('accessKey');
+    const region = await this.readStorage('region') || 'us-west-1';
     const credential = window.btoa(`${username}:${accessKey}`);
     const recording = await this.readStorage('recording');
     this.setState({suite: JSON.parse(recording).title});
 
     let fileId;
     try {
-      fileId = await this.uploadFile(recording, 'recordings.json', credential)
+      fileId = await this.uploadFile(recording, 'recordings.json', credential, region)
     } catch (err) {
       this.setState({
         triggered: false,
@@ -57,7 +59,7 @@ class App extends React.Component {
 
     let configFileId;
     try {
-      configFileId = await this.uploadFile(JSON.stringify(this.composeConfig()), 'sauce-runner.json', credential)
+      configFileId = await this.uploadFile(JSON.stringify(this.composeConfig(region)), 'sauce-runner.json', credential, region)
     } catch (err) {
       this.setState({
         triggered: false,
@@ -69,7 +71,7 @@ class App extends React.Component {
 
     let runnerVersion;
     try {
-      runnerVersion = await this.getRunnerVersion(credential)
+      runnerVersion = await this.getRunnerVersion(credential, region)
     } catch (err) {
       this.setState({
         triggered: false,
@@ -82,7 +84,7 @@ class App extends React.Component {
     const storage = `storage:${fileId},storage:${configFileId}`;
     let jobId;
     try {
-      jobId = await this.startJob(credential, storage, runnerVersion)
+      jobId = await this.startJob(credential, storage, runnerVersion, region)
     } catch (err) {
       this.setState({
         triggered: false,
@@ -91,12 +93,11 @@ class App extends React.Component {
       })
       return;
     }
-    this.setState({jobId: jobId})
-    this.setState({platform: ''})
+    this.setState({jobId: jobId, platform: '', region: region})
   }
 
-  async getRunnerVersion(credential) {
-    const url = `https://api.${this.state.region}.saucelabs.com/v1/testcomposer/frameworks/puppeteer-replay`
+  async getRunnerVersion(credential, region) {
+    const url = `https://api.${region}.saucelabs.com/v1/testcomposer/frameworks/puppeteer-replay`
     let resp;
     try {
       resp = await fetch(url, {
@@ -117,7 +118,7 @@ class App extends React.Component {
     return  body.version;
   }
 
-  async startJob(credential, storage, runnerVersion) {
+  async startJob(credential, storage, runnerVersion, region) {
     const data = {
       capabilities: {
         alwaysMatch: {
@@ -144,7 +145,7 @@ class App extends React.Component {
     };
     let resp;
     try {
-      resp = await fetch(`https://ondemand.${this.state.region}.saucelabs.com/wd/hub/session`, {
+      resp = await fetch(`https://ondemand.${region}.saucelabs.com/wd/hub/session`, {
         method: 'POST',
         headers: {
           Accept: '*/*',
@@ -163,10 +164,10 @@ class App extends React.Component {
     return body.sessionId;
   }
 
-  composeConfig() {
+  composeConfig(region) {
     return {
       sauce: {
-        region: this.state.region,
+        region: region,
       },
       suites: [
         {
@@ -179,13 +180,13 @@ class App extends React.Component {
     }
   }
 
-  async uploadFile(data, fileName, credential) {
+  async uploadFile(data, fileName, credential, region) {
     const formData = new FormData();
     formData.append('payload', data)
     formData.append('name', fileName)
     let resp;
     try {
-       resp = await fetch(`https://api.${this.state.region}.saucelabs.com/v1/storage/upload`, {
+       resp = await fetch(`https://api.${region}.saucelabs.com/v1/storage/upload`, {
         method: 'POST',
         headers: {
           Accept: '*/*',
