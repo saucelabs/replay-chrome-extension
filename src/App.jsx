@@ -1,6 +1,7 @@
 import React from "react";
 import ConfigForm from "./ConfigForm";
 import LoginForm from "./LoginForm";
+import Logout from './Logout';
 import './App.css';
 
 class App extends React.Component {
@@ -25,6 +26,7 @@ class App extends React.Component {
     };
     this.handleLogin = this.handleLogin.bind(this);
     this.handleConfig = this.handleConfig.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
   }
 
   async componentDidMount() { 
@@ -258,6 +260,20 @@ class App extends React.Component {
     }
   }
 
+  handleLogout() {
+    this.setState({
+      token: false,
+      region: '',
+      suite: '',
+      jobId: '',
+      platform: '',
+      failed: false,
+      errMsg: '',
+      triggered: false,
+      validationMsg: '',
+    });
+  }
+
   render() {
     if (!this.state.token) {
       return (
@@ -273,6 +289,8 @@ class App extends React.Component {
         <div>
           <span>Sauce Job: </span>
           <a href={job} target="_blank" rel="noreferrer">{job}</a>
+          <br />
+          <Logout handleLogout={this.handleLogout} />
         </div>
       )
     } else if (this.state.triggered) {
@@ -281,13 +299,21 @@ class App extends React.Component {
       )
     } else if (this.state.failed && this.state.errMsg !== '') {
       return (
-        <div>Failed to run a test, reason: {this.state.errMsg}</div>
+        <div>
+          <div>Failed to run a test, reason: {this.state.errMsg}</div>
+          <br />
+          <Logout handleLogout={this.handleLogout} />
+        </div>
       )
     } else {
       return (
-        <ConfigForm
-          handleConfig={this.handleConfig}
-        />
+        <div>
+          <ConfigForm
+            handleConfig={this.handleConfig}
+          />
+          <br />
+          <Logout handleLogout={this.handleLogout} />
+        </div>
       )
     }
   }
