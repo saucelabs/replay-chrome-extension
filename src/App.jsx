@@ -29,7 +29,7 @@ class App extends React.Component {
     this.handleLogout = this.handleLogout.bind(this);
   }
 
-  async componentDidMount() { 
+  async componentDidMount() {
     const token = await this.readStorage('token');
     this.setState({token: token});
   }
@@ -108,6 +108,7 @@ class App extends React.Component {
           Authorization:
             'Basic ' + credential,
         },
+        credentials: 'include',
       })
     } catch (err) {
       throw new Error(err);
@@ -117,7 +118,7 @@ class App extends React.Component {
       throw new Error(body);
     }
 
-    return  body.version;
+    return body.version;
   }
 
   async startJob(credential, storage, runnerVersion, region) {
@@ -153,6 +154,7 @@ class App extends React.Component {
           Accept: '*/*',
           Authorization: 'Basic ' + credential,
         },
+        credentials: 'include',
         body: JSON.stringify(data),
       })
     } catch (err) {
@@ -188,7 +190,7 @@ class App extends React.Component {
     formData.append('name', fileName)
     let resp;
     try {
-       resp = await fetch(`https://api.${region}.saucelabs.com/v1/storage/upload`, {
+      resp = await fetch(`https://api.${region}.saucelabs.com/v1/storage/upload`, {
         method: 'POST',
         headers: {
           Accept: '*/*',
@@ -196,6 +198,7 @@ class App extends React.Component {
             'Basic ' + credential,
           'User-Agent': 'chrome-extension',
         },
+        credentials: 'include',
         body: formData,
       })
     } catch (err) {
@@ -205,7 +208,7 @@ class App extends React.Component {
     if (!resp.ok) {
       throw new Error(body.detail);
     }
-    
+
     return body.item.id;
   }
 
@@ -251,7 +254,7 @@ class App extends React.Component {
 
   composeUrl(jobId) {
     switch (this.state.region) {
-      case 'us-west-1': 
+      case 'us-west-1':
         return `https://app.saucelabs.com/tests/${jobId}`;
       case 'eu-central-1':
         return `https://app.eu-central-1.saucelabs.com/tests/${jobId}`;
@@ -279,7 +282,7 @@ class App extends React.Component {
       return (
         <div>
           <LoginForm
-          handleLogin={this.handleLogin} />
+            handleLogin={this.handleLogin}/>
           {this.state.validationMsg !== '' && (<div className="validation">{this.state.validationMsg}</div>)}
         </div>
       );
@@ -289,8 +292,8 @@ class App extends React.Component {
         <div>
           <span>Sauce Job: </span>
           <a href={job} target="_blank" rel="noreferrer">{job}</a>
-          <br />
-          <Logout handleLogout={this.handleLogout} />
+          <br/>
+          <Logout handleLogout={this.handleLogout}/>
         </div>
       )
     } else if (this.state.triggered) {
@@ -301,8 +304,8 @@ class App extends React.Component {
       return (
         <div>
           <div>Failed to run a test, reason: {this.state.errMsg}</div>
-          <br />
-          <Logout handleLogout={this.handleLogout} />
+          <br/>
+          <Logout handleLogout={this.handleLogout}/>
         </div>
       )
     } else {
@@ -311,8 +314,8 @@ class App extends React.Component {
           <ConfigForm
             handleConfig={this.handleConfig}
           />
-          <br />
-          <Logout handleLogout={this.handleLogout} />
+          <br/>
+          <Logout handleLogout={this.handleLogout}/>
         </div>
       )
     }
