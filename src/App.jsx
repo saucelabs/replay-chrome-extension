@@ -108,7 +108,7 @@ class App extends React.Component {
           Authorization:
             'Basic ' + credential,
         },
-        credentials: 'include',
+        credentials: 'omit',
       })
     } catch (err) {
       throw new Error(err);
@@ -154,7 +154,7 @@ class App extends React.Component {
           Accept: '*/*',
           Authorization: 'Basic ' + credential,
         },
-        credentials: 'include',
+        credentials: 'omit',
         body: JSON.stringify(data),
       })
     } catch (err) {
@@ -198,7 +198,7 @@ class App extends React.Component {
             'Basic ' + credential,
           'User-Agent': 'chrome-extension',
         },
-        credentials: 'include',
+        credentials: 'omit',
         body: formData,
       })
     } catch (err) {
