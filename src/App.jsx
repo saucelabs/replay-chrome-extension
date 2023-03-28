@@ -239,17 +239,8 @@ class App extends React.Component {
   }
 
   async readStorage(key) {
-    return new Promise((resolve, reject) => {
-      // eslint-disable-next-line no-undef
-      chrome.storage.session.get([key], function (result) {
-        if (result[key] === undefined) {
-          // eslint-disable-next-line prefer-promise-reject-errors
-          reject();
-        } else {
-          resolve(result[key]);
-        }
-      });
-    });
+    const result = await chrome.storage.session.get([key]);
+    return result[key];
   }
 
   composeUrl(jobId) {
