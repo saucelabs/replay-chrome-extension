@@ -137,7 +137,7 @@ class App extends React.Component {
               runnerVersion: runnerVersion,
               testFile: this.state.suite,
               args: null,
-              video_fps: 25,
+              video_fps: 13,
             },
             idleTimeout: 9999,
             maxDuration: 10800,
