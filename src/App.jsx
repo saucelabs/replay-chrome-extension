@@ -23,6 +23,7 @@ class App extends React.Component {
       errMsg: '',
       triggered: false,
       validationMsg: '',
+      version: chrome.runtime.getManifest().version,
     };
     this.handleLogin = this.handleLogin.bind(this);
     this.handleConfig = this.handleConfig.bind(this);
@@ -141,7 +142,7 @@ class App extends React.Component {
             },
             idleTimeout: 9999,
             maxDuration: 10800,
-            user_agent: 'chrome_extension',
+            user_agent: `SauceReplay/${this.state.version}`,
           },
         },
       },
