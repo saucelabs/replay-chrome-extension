@@ -23,7 +23,7 @@ class App extends React.Component {
       errMsg: '',
       triggered: false,
       validationMsg: '',
-      version: chrome.runtime.getManifest().version,
+      userAgent: `SauceReplay/${chrome.runtime.getManifest().version}`,
     };
     this.handleLogin = this.handleLogin.bind(this);
     this.handleConfig = this.handleConfig.bind(this);
@@ -108,6 +108,7 @@ class App extends React.Component {
           Accept: '*/*',
           Authorization:
             'Basic ' + credential,
+          'User-Agent': this.state.userAgent,
         },
         credentials: 'omit',
       })
@@ -142,7 +143,7 @@ class App extends React.Component {
             },
             idleTimeout: 9999,
             maxDuration: 10800,
-            user_agent: `SauceReplay/${this.state.version}`,
+            user_agent: this.state.userAgent,
           },
         },
       },
@@ -154,6 +155,7 @@ class App extends React.Component {
         headers: {
           Accept: '*/*',
           Authorization: 'Basic ' + credential,
+          'User-Agent': this.state.userAgent,
         },
         credentials: 'omit',
         body: JSON.stringify(data),
@@ -197,7 +199,7 @@ class App extends React.Component {
           Accept: '*/*',
           Authorization:
             'Basic ' + credential,
-          'User-Agent': 'chrome-extension',
+          'User-Agent': this.state.userAgent,
         },
         credentials: 'omit',
         body: formData,
