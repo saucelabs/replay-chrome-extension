@@ -127,7 +127,7 @@ class App extends React.Component {
         alwaysMatch: {
           app: storage,
           browserName: 'googlechrome',
-          platformName: this.state.platform || 'Windows 10',
+          platformName: this.state.platform || 'Windows 11',
           'sauce:options': {
             devX: true,
             name: this.state.suite,
