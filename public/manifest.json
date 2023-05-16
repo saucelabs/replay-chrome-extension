@@ -5,5 +5,6 @@
    "manifest_version": 3,
    "permissions": [ "storage" ],
    "host_permissions": ["https://*.saucelabs.com/"],
-   "devtools_page": "DevToolsPlugin.html"
+   "devtools_page": "DevToolsPlugin.html",
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtP7EdrT9bfiA8gYvZh8qWDwj2F7D+XB7JvmjGop3K7V05OPEtZsJDDPgGFxgTFuYs0i+Ze+190Z8FFjGnv/GP/QzTtlmvlM1Sc6qWLPfavzZbTPOyhk8//EFT/6dR6Wfqf6v391zJ0C+3kb8uRHe7N7MNvLnvR5Sa+R3rESkiPCy0azT9ZTmZM7bwi+SR25tl65dKVdmlqVQTYqVIWEWbhiiinjLaxrQVen+inF1/Nhjge+3CY3Gi+THSAMb53kUvouZfMGool4jMERA+3eidvC3fQ0kZKqGB3aqpOgZqVw/M+ARTw56UveTVTY0m63eaFDLbkOMrGNImf1jJZLTjwIDAQAB"
 }
