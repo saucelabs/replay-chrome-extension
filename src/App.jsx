@@ -23,6 +23,7 @@ class App extends React.Component {
       errMsg: '',
       triggered: false,
       validationMsg: '',
+      userAgent: `SauceReplay/${chrome.runtime.getManifest().version}`,
     };
     this.handleLogin = this.handleLogin.bind(this);
     this.handleConfig = this.handleConfig.bind(this);
@@ -107,6 +108,7 @@ class App extends React.Component {
           Accept: '*/*',
           Authorization:
             'Basic ' + credential,
+          'User-Agent': this.state.userAgent,
         },
         credentials: 'omit',
       })
@@ -127,7 +129,7 @@ class App extends React.Component {
         alwaysMatch: {
           app: storage,
           browserName: 'googlechrome',
-          platformName: this.state.platform || 'Windows 10',
+          platformName: this.state.platform || 'Windows 11',
           'sauce:options': {
             devX: true,
             name: this.state.suite,
@@ -137,11 +139,11 @@ class App extends React.Component {
               runnerVersion: runnerVersion,
               testFile: this.state.suite,
               args: null,
-              video_fps: 25,
+              video_fps: 13,
             },
             idleTimeout: 9999,
             maxDuration: 10800,
-            user_agent: 'chrome_extension',
+            user_agent: this.state.userAgent,
           },
         },
       },
@@ -153,6 +155,7 @@ class App extends React.Component {
         headers: {
           Accept: '*/*',
           Authorization: 'Basic ' + credential,
+          'User-Agent': this.state.userAgent,
         },
         credentials: 'omit',
         body: JSON.stringify(data),
@@ -196,7 +199,7 @@ class App extends React.Component {
           Accept: '*/*',
           Authorization:
             'Basic ' + credential,
-          'User-Agent': 'chrome-extension',
+          'User-Agent': this.state.userAgent,
         },
         credentials: 'omit',
         body: formData,
