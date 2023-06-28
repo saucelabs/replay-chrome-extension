@@ -127,7 +127,7 @@ class App extends React.Component {
   }
 
   async getTunnels(credential, username, region) {
-    const url = `https://api.${region}.saucelabs.com/rest/v1/${username}/tunnels?full=true&all=true`
+    const url = `https://api.${region}.saucelabs.com/rest/v1/${username}/tunnels?full=true&all=true`;
     let resp;
     try {
       resp = await fetch(url, {
