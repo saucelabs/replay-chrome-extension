@@ -123,7 +123,7 @@ class App extends React.Component {
     const accessKey = await this.readStorage('accessKey');
     const region = await this.readStorage('region') || 'us-west-1';
     const credential = window.btoa(`${username}:${accessKey}`);
-    return { username, accessKey, region, credential }
+    return { username, accessKey, region, credential };
   }
 
   async getTunnels(credential, username, region) {
