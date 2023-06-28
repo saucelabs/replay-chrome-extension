@@ -6,21 +6,37 @@ class ConfigForm extends React.Component {
     super(props);
     this.state = {
       platform: 'Windows 11',
+      tunnel: '',
     }
   }
 
   handleChange(key, event) {
-    this.setState({[key]: event.target.value,});
+    this.setState({[key]: event.target.value});
   }
 
   render() {
     const {
-      handleConfig
+      handleConfig,
+      tunnels,
     } = this.props;
 
       return (
         <div className="form">
           <form onSubmit={(event) => handleConfig(event, this.state)}>
+            { tunnels.length > 0 && (
+              <div className="form-row">
+                <label className="form-label">
+                  Tunnel
+                </label>
+                <select className="tunnel" id="tunnel" value={this.state.tunnel} onChange={(event) => this.handleChange('tunnel', event)}>
+                  <option value="not set">Not Set</option>
+                  { tunnels.map((tunnel) => (
+                      <option value={tunnel}>{tunnel}</option>
+                    ))
+                  }
+                </select>
+              </div>
+            )}
             <div className="form-row">
               <label className="form-label">
                 Platform
