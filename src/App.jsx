@@ -34,14 +34,17 @@ class App extends React.Component {
 
   async componentDidMount() {
     const token = await this.readStorage('token');
+    this.setState({token: token})
 
-    const username = await this.readStorage('username');
-    const accessKey = await this.readStorage('accessKey');
-    const region = await this.readStorage('region') || 'us-west-1';
-    const credential = window.btoa(`${username}:${accessKey}`);
+    const {
+      username,
+      region,
+      credential,
+    } = await this.getAccountSetting()
+
     const tunnels = await this.getTunnels(credential, username, region)
 
-    this.setState({token: token, availableTunnels: tunnels});
+    this.setState({availableTunnels: tunnels});
   }
 
   async componentDidUpdate() {
@@ -50,10 +53,11 @@ class App extends React.Component {
       return;
     }
 
-    const username = await this.readStorage('username');
-    const accessKey = await this.readStorage('accessKey');
-    const region = await this.readStorage('region') || 'us-west-1';
-    const credential = window.btoa(`${username}:${accessKey}`);
+    const {
+      region,
+      credential,
+    } = await this.getAccountSetting()
+
     const recording = await this.readStorage('recording');
     this.setState({suite: JSON.parse(recording).title});
 
@@ -112,6 +116,14 @@ class App extends React.Component {
     })
   }
 
+  async getAccountSetting() {
+    const username = await this.readStorage('username');
+    const accessKey = await this.readStorage('accessKey');
+    const region = await this.readStorage('region') || 'us-west-1';
+    const credential = window.btoa(`${username}:${accessKey}`);
+    return { username, accessKey, region, credential }
+  }
+
   async getTunnels(credential, username, region) {
     const url = `https://api.${region}.saucelabs.com/rest/v1/${username}/tunnels?full=true&all=true`
     let resp;
@@ -132,14 +144,14 @@ class App extends React.Component {
     if (!resp.ok) {
       throw new Error(body);
     }
-    const tunnels = [];
+    const tunnelIdentifiers = [];
     Object.values(body).forEach(tunnels => {
       tunnels.forEach(item => 
-        tunnels.push(item.tunnel_identifier)
+        tunnelIdentifiers.push(item.tunnel_identifier)
       )
     })
 
-    return tunnels;
+    return tunnelIdentifiers;
   }
 
   async getRunnerVersion(credential, region) {
