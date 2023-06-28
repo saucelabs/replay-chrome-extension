@@ -149,7 +149,7 @@ class App extends React.Component {
     const tunnelIdentifiers = [];
     Object.values(body).forEach(tunnels => {
       tunnels.forEach(item => 
-        tunnelIdentifiers.push(item.tunnel_identifier)
+        tunnelIdentifiers.push(item.tunnel_identifier);
       )
     })
 
