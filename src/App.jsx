@@ -19,6 +19,8 @@ class App extends React.Component {
       suite: '',
       jobId: '',
       platform: '',
+      tunnel: '',
+      availableTunnels: [],
       failed: false,
       errMsg: '',
       triggered: false,
@@ -32,7 +34,14 @@ class App extends React.Component {
 
   async componentDidMount() {
     const token = await this.readStorage('token');
-    this.setState({token: token});
+
+    const username = await this.readStorage('username');
+    const accessKey = await this.readStorage('accessKey');
+    const region = await this.readStorage('region') || 'us-west-1';
+    const credential = window.btoa(`${username}:${accessKey}`);
+    const tunnels = await this.getTunnels(credential, username, region)
+
+    this.setState({token: token, availableTunnels: tunnels});
   }
 
   async componentDidUpdate() {
@@ -96,7 +105,41 @@ class App extends React.Component {
       })
       return;
     }
-    this.setState({jobId: jobId, platform: '', region: region})
+    this.setState({
+      jobId: jobId,
+      platform: '',
+      region: region
+    })
+  }
+
+  async getTunnels(credential, username, region) {
+    const url = `https://api.${region}.saucelabs.com/rest/v1/${username}/tunnels?full=true&all=true`
+    let resp;
+    try {
+      resp = await fetch(url, {
+        headers: {
+          Accept: '*/*',
+          Authorization:
+            'Basic ' + credential,
+          'User-Agent': this.state.userAgent,
+        },
+        credentials: 'omit',
+      })
+    } catch (err) {
+      throw new Error(err);
+    }
+    const body = await resp.json()
+    if (!resp.ok) {
+      throw new Error(body);
+    }
+    const tunnels = [];
+    Object.values(body).forEach(tunnels => {
+      tunnels.forEach(item => 
+        tunnels.push(item.tunnel_identifier)
+      )
+    })
+
+    return tunnels;
   }
 
   async getRunnerVersion(credential, region) {
@@ -131,7 +174,6 @@ class App extends React.Component {
           browserName: 'googlechrome',
           platformName: this.state.platform || 'Windows 11',
           'sauce:options': {
-            devX: true,
             name: this.state.suite,
             _batch: {
               framework: 'puppeteer-replay',
@@ -141,6 +183,7 @@ class App extends React.Component {
               args: null,
               video_fps: 13,
             },
+            tunnelIdentifier: this.state.tunnel,
             idleTimeout: 9999,
             maxDuration: 10800,
             user_agent: this.state.userAgent,
@@ -175,6 +218,9 @@ class App extends React.Component {
     return {
       sauce: {
         region: region,
+        tunnel: {
+          name: this.state.tunnel,
+        }
       },
       suites: [
         {
@@ -237,6 +283,7 @@ class App extends React.Component {
     event.preventDefault();
     this.setState({
       platform: config.platform,
+      tunnel: config.tunnel,
       triggered: true,
     })
   }
@@ -307,6 +354,7 @@ class App extends React.Component {
         <div>
           <ConfigForm
             handleConfig={this.handleConfig}
+            tunnels={this.state.availableTunnels}
           />
           <br/>
           <Logout handleLogout={this.handleLogout}/>
