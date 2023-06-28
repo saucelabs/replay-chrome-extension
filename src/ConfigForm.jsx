@@ -20,8 +20,6 @@ class ConfigForm extends React.Component {
       tunnels,
     } = this.props;
 
-    console.log('tunnels: ', tunnels)
-
       return (
         <div className="form">
           <form onSubmit={(event) => handleConfig(event, this.state)}>
