@@ -44,7 +44,7 @@ class App extends React.Component {
 
     // fetch tunnel info every 20 seconds
     setInterval(async () => {
-      const tunnels = await this.getTunnels(credential, username, region)
+      const tunnels = await this.getTunnels(credential, username, region);
       this.setState({availableTunnels: tunnels});
     }, 20000);
   }
