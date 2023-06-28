@@ -42,9 +42,11 @@ class App extends React.Component {
       credential,
     } = await this.getAccountSetting();
 
-    const tunnels = await this.getTunnels(credential, username, region)
-
-    this.setState({availableTunnels: tunnels});
+    // fetch tunnel info every 20 seconds
+    setInterval(async () => {
+      const tunnels = await this.getTunnels(credential, username, region)
+      this.setState({availableTunnels: tunnels});
+    }, 20000);
   }
 
   async componentDidUpdate() {
