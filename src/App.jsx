@@ -115,7 +115,7 @@ class App extends React.Component {
       jobId: jobId,
       platform: '',
       region: region
-    })
+    });
   }
 
   async getAccountSetting() {
