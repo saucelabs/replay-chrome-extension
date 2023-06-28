@@ -34,13 +34,13 @@ class App extends React.Component {
 
   async componentDidMount() {
     const token = await this.readStorage('token');
-    this.setState({token: token})
+    this.setState({token: token});
 
     const {
       username,
       region,
       credential,
-    } = await this.getAccountSetting()
+    } = await this.getAccountSetting();
 
     const tunnels = await this.getTunnels(credential, username, region)
 
@@ -56,7 +56,7 @@ class App extends React.Component {
     const {
       region,
       credential,
-    } = await this.getAccountSetting()
+    } = await this.getAccountSetting();
 
     const recording = await this.readStorage('recording');
     this.setState({suite: JSON.parse(recording).title});
