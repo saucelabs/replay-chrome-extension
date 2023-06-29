@@ -8,10 +8,18 @@
   },
   "scripts": {
     "build": "./versionsync.sh && INLINE_RUNTIME_CHUNK=false react-scripts build",
-    "prod": "npm run build && jq -r '.version' public/manifest.json | xargs -I {} zip -r sauce-labs-replay-{}.zip build"
+    "bundle": "npm run build && jq -r '.version' public/manifest.json | xargs -I {} zip -r sauce-labs-replay-{}.zip build",
+    "release": "tsc && release-it --github.release",
+    "release:ci": "npm run release -- --ci --no-git.requireCleanWorkingDir --no-npm.publish",
+    "release:patch": "npm run release -- patch",
+    "release:minor": "npm run release -- minor",
+    "release:major": "npm run release -- major"
   },
   "devDependencies": {
-    "react-scripts": "5.0.1"
+    "react-scripts": "5.0.1",
+    "release-it": "^15.11.0"
   },
-  "browserslist": ["last 2 chrome versions"]
+  "browserslist": [
+    "last 2 chrome versions"
+  ]
 }
