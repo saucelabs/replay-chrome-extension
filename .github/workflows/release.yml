@@ -1,0 +1,47 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      releaseType:
+        description: 'Release type - major, minor or patch'
+        required: false
+        default: 'patch'
+
+jobs:
+  publish-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.ref }}
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Setup Git
+        run: |
+          git config --global user.name "devx-sauce-bot"
+          git config --global user.email "devx.bot@saucelabs.com"
+
+      - name: Bump Manifest Version
+        run: |
+          VERSION=$(npx release-it ${{ github.event.inputs.releaseType }} --release-version --no-git.requireCleanWorkingDir --no-npm.publish --no-github.release)
+          jq --arg v "$VERSION" '.version = $v' public/manifest.json > temp_manifest.json
+          mv temp_manifest.json public/manifest.json
+
+      - name: Bundle
+        run: npm run bundle
+
+      - name: Release
+        run: npm run release:ci -- ${{ github.event.inputs.releaseType }}
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
