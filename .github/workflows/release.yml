@@ -38,6 +38,9 @@ jobs:
           jq --arg v "$VERSION" '.version = $v' public/manifest.json > temp_manifest.json
           mv temp_manifest.json public/manifest.json
 
+      - name: Bundle
+        run: npm run bundle
+
       - name: Release
         run: npm run release:ci -- ${{ github.event.inputs.releaseType }}
         env:
