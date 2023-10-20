@@ -16,7 +16,8 @@
     "release:ci": "npm run release -- --ci --no-git.requireCleanWorkingDir --no-npm.publish",
     "release:patch": "npm run release -- patch",
     "release:minor": "npm run release -- minor",
-    "release:major": "npm run release -- major"
+    "release:major": "npm run release -- major",
+    "prepare": "husky install"
   },
   "devDependencies": {
     "chrome-types": "^0.1.233",
@@ -24,7 +25,8 @@
     "eslint-plugin-prettier": "^5.0.1",
     "prettier": "^3.0.3",
     "react-scripts": "5.0.1",
-    "release-it": "^15.11.0"
+    "release-it": "^15.11.0",
+    "husky": "^8.0.3"
   },
   "browserslist": [
     "last 2 chrome versions"
