@@ -7,7 +7,7 @@ import './App.css';
 class App extends React.Component {
   constructor(props) {
     super(props);
-    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    chrome.runtime.onMessage.addListener((request) => {
       chrome.storage.session.set({ recording: request });
     });
 
