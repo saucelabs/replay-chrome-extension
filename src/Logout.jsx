@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 class Logout extends React.Component {
   constructor(props) {
@@ -6,14 +6,14 @@ class Logout extends React.Component {
   }
 
   render() {
-    const {
-      handleLogout
-    } = this.props;
+    const { handleLogout } = this.props;
 
-		return (
-			<button className="logout" onClick={handleLogout}>Logout</button>
-		)
-	}
+    return (
+      <button className="logout" onClick={handleLogout}>
+        Logout
+      </button>
+    );
+  }
 }
 
 export default Logout;

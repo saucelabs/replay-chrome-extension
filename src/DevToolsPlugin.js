@@ -1,7 +1,6 @@
-/* eslint-disable no-undef */
 const view = await chrome.devtools.recorder.createView(
-  /* name= */ 'Sauce Labs',
-  /* pagePath= */ 'index.html'
+  'Sauce Labs',
+  'index.html',
 );
 
 let latestRecording;
@@ -24,8 +23,7 @@ export class RecorderPlugin {
   }
 }
 
-/* eslint-disable no-undef */
 chrome.devtools.recorder.registerRecorderExtensionPlugin(
   new RecorderPlugin(),
-  /* name=*/ 'Sauce Labs'
+  'Sauce Labs',
 );
