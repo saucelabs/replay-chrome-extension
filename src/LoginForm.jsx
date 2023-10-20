@@ -1,5 +1,5 @@
-import React from "react";
-import "./LoginForm.css";
+import React from 'react';
+import './LoginForm.css';
 
 class LoginForm extends React.Component {
   constructor(props) {
@@ -12,28 +12,34 @@ class LoginForm extends React.Component {
   }
 
   handleChange(key, event) {
-    this.setState({[key]: event.target.value});
+    this.setState({ [key]: event.target.value });
   }
 
   render() {
-    const {
-      handleLogin
-    } = this.props;
+    const { handleLogin } = this.props;
 
     return (
       <div className="form">
         <form onSubmit={(event) => handleLogin(event, this.state)}>
           <div className="form-row">
-            <label className="form-label">
-              Sauce User Name
-            </label>
-            <input id="username" className="username" type="text" value={this.state.username} onChange={(event) => this.handleChange('username', event)} />
+            <label className="form-label">Sauce User Name</label>
+            <input
+              id="username"
+              className="username"
+              type="text"
+              value={this.state.username}
+              onChange={(event) => this.handleChange('username', event)}
+            />
           </div>
           <div className="form-row">
-            <label className="form-label">
-              Sauce Access Key
-            </label>
-            <input id="accessKey" className="accessKey" type="password" value={this.state.accessKey} onChange={(event) => this.handleChange('accessKey', event)} />
+            <label className="form-label">Sauce Access Key</label>
+            <input
+              id="accessKey"
+              className="accessKey"
+              type="password"
+              value={this.state.accessKey}
+              onChange={(event) => this.handleChange('accessKey', event)}
+            />
           </div>
           <div className="region form-row">
             <input
@@ -54,7 +60,12 @@ class LoginForm extends React.Component {
             eu-central-1
           </div>
           <div className="form-submit">
-            <input id="submit" className="submit" type="submit" value="Submit" />
+            <input
+              id="submit"
+              className="submit"
+              type="submit"
+              value="Submit"
+            />
           </div>
         </form>
       </div>
